@@ -9,10 +9,20 @@ import filesRouter from "#api/files";
 // use express json body parser
 app.use(express.json());
 
-// invoke the /folder router 
-app.use("/folders", foldersRouter)
+// invoke the routers
+app.use("/files", filesRouter);
+app.use("/folders", foldersRouter);
 
-app.use("/files", filesRouter)
+// PostgreSQL errors have codes that we can check to send better
+// error messages to the client.
+app.use((err, req, res, next) => {
+  // Unique constraint violation
+  if (err.code === "23505") {
+    return res.status(400).send(err.detail);
+  }
+
+  next(err);
+});
 
 // add error 500 handler
 app.use((err, req, res, next)=>{

@@ -20,13 +20,44 @@ export async function getFolders() {
   return folders;
 };
 
-// send a folder by given ID
+// // send a folder by given ID
+// export async function getFolderById(id) {
+//   const sql=`
+//     SELECT *
+//     FROM folders
+//     WHERE id=$1
+//   `;
+//   const { rows: [folder] } = await db.query(sql, [id]);
+//   return folder;
+// };
+
+// get folder by id with files
 export async function getFolderById(id) {
   const sql=`
-    SELECT *
+    SELECT *,
+    (
+      SELECT json_agg(files)
+      FROM files
+      WHERE files.folder_id = folders.id
+    ) AS files
     FROM folders
     WHERE id=$1
   `;
   const { rows: [folder] } = await db.query(sql, [id]);
   return folder;
-};
+}
+
+// not needed
+// update the folder with given id
+// export async function updateFolder({ id, name, birthday, salary }) {
+//   // TODO
+//   const sql = `
+//   UPDATE folders
+//   SET name=$2, birthday=$3, salary=$4
+//   WHERE id=$1
+//   RETURNING *
+//   `;
+//   const { rows: [folder]} = await db.query(sql, 
+//     [id, name, birthday, salary]
+//   );
+//   return folder;
