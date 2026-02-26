@@ -22,7 +22,7 @@ router.param("id", async(req, res, next, id)=>{
   // find the specific id
 
   const folder = await getFolderById(id);
-  if (!folder) res.status(404).send('Folder does not exist.');
+  if (!folder) return res.status(404).send('Folder does not exist.');
 
   // attach folder to req so rest of middleware below it can access
   req.folder = folder;
@@ -42,11 +42,11 @@ router.get("/:id", (req, res)=>{
   // Creates a new file related to the specified folder and sends the file back with status 201
 
 router.post("/:id/files", async (req, res)=>{
-  if (!req.body) res.status(400).send('body is not provided.');
+  if (!req.body) return res.status(400).send('body is not provided.');
   
   const {name, size} = req.body;
   if (!name || !size) {
-    res.status(400).send('body is missing required fields.')
+    return res.status(400).send('body is missing required fields.')
   };
 
   const file = await createFile(name, size, req.folder.id);

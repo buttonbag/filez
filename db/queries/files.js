@@ -13,7 +13,7 @@ export async function createFile(name, size, folder_id) {
 // sends array of all files
 export async function getFiles() {
   const sql=`
-    SELECT files.*, folder.name AS folder_name
+    SELECT files.*, folders.name AS folder_name
     FROM files
       JOIN folders ON folders.id = files.folder_id
   `;

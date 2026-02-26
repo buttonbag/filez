@@ -27,5 +27,5 @@ app.use((err, req, res, next) => {
 // add error 500 handler
 app.use((err, req, res, next)=>{
   console.error(err);
-  res.status(500).send(`Fatal error!`);
+  res.status(500).send("Fatal error!");
 })
